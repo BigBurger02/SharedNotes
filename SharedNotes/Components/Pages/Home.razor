@@ -1,0 +1,50 @@
+﻿@page "/"
+@using Microsoft.EntityFrameworkCore
+@using SharedNotes.Data
+@using SharedNotes.Model
+@attribute [StreamRendering]
+@inject IDbContextFactory<NotesContext> DbFactory
+
+<PageTitle>Notes</PageTitle>
+
+@if (notes == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if(!notes.Any())
+{
+    <p>
+        <em>No notes</em>
+    </p>
+}
+else
+{
+    foreach (var item in notes)
+    {
+        <div>
+            @item.Title: @item.Body: @item.Created
+        </div>
+    }
+}
+
+
+
+
+
+@code {
+    private List<Note> notes = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        notes = await GetAllNotes();
+    }
+
+    private async Task<List<Note>> GetAllNotes()
+    {
+        using var context = await DbFactory.CreateDbContextAsync();
+        return context.Notes.ToList();
+    }
+
+}
