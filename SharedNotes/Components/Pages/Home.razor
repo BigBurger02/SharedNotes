@@ -28,10 +28,10 @@
 		<ValidationSummary/>
 
 		<div>
-			<InputText @bind-Value="EditingNote.Title" class="input-text" />
+			<InputText @bind-Value="EditingNote.Title" class="input-text"/>
 		</div>
 		<div>
-			<InputTextArea @bind-Value="EditingNote.Body"  class="input-text height-200px" />
+			<InputTextArea @bind-Value="EditingNote.Body" class="input-text height-200px"/>
 		</div>
 
 		<div>
@@ -59,14 +59,37 @@
 		<div class="notes-list">
 			@foreach (var item in Notes)
 			{
-				<div class="note-in-list flex-space-between">
-					<div class="note-in-list-item width-50">@item.Title</div>
-					<div class="note-in-list-item">@item.LastEdit</div>
-					<div class="note-in-list-item-buttons flex-space-between">
-						<button class="white-button mr-10" @onclick="() => EditNote(item.Id)">View note</button>
-						<button class="white-button" @onclick="() => EditNote(item.Id)">Edit note</button>
+				if (ViewNote == item.Id)
+				{
+					<div class="note-in-list">
+						<div class="flex-space-between">
+							<div class="note-in-list-item width-50">@item.Title</div>
+							<div class="note-in-list-item">@item.LastEdit</div>
+							<div class="note-in-list-item-buttons flex-space-between">
+								<button class="white-button mr-10" @onclick="() => ViewNote = -1">Hide note</button>
+								<button class="white-button" @onclick="() => EditNote(item.Id)">Edit note</button>
+							</div>
+						</div>
+						<div class="note-in-list-view">
+							@item.Body
+						</div>
+						<div></div>
 					</div>
-				</div>
+				}
+				else
+				{
+					<div class="note-in-list">
+						<div class="flex-space-between">
+							<div class="note-in-list-item width-50">@item.Title</div>
+							<div class="note-in-list-item">@item.LastEdit</div>
+							<div class="note-in-list-item-buttons flex-space-between">
+								<button class="white-button mr-10" @onclick="() => ViewNote = item.Id">View note</button>
+								<button class="white-button" @onclick="() => EditNote(item.Id)">Edit note</button>
+							</div>
+						</div>
+						<div></div>
+					</div>
+				}
 			}
 		</div>
 	}
@@ -75,6 +98,7 @@
 
 @code {
 	private int EditingNoteId = -1; // -1 - none; 0 - new note
+	private int ViewNote = -1;
 
 	private List<Note> Notes = null;
 
@@ -106,21 +130,21 @@
 
 			return;
 		}
-		
+
 		EditingNoteId = id;
-		EditingNote = Notes.Find(i => i.Id == id);	
+		EditingNote = Notes.Find(i => i.Id == id);
 	}
 
 	private async Task SaveNote()
 	{
 		using var context = await DbFactory.CreateDbContextAsync();
-		
+
 		if (EditingNoteId == 0)
 		{
 			EditingNote.LastEdit = DateTime.UtcNow;
 			await context.Notes.AddAsync(EditingNote);
 			await context.SaveChangesAsync();
-			
+
 			Notes.Add(EditingNote);
 		}
 		else
@@ -130,9 +154,13 @@
 			context.Notes.Update(EditingNote);
 			await context.SaveChangesAsync();
 		}
-		
+
 		EditingNoteId = -1;
 		EditingNote = null;
+		
+		Notes = Notes
+			.OrderByDescending(l => l.LastEdit)
+			.ToList();
 	}
 
 }

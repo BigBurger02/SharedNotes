@@ -2,6 +2,9 @@ html {
     text-decoration: none;
     font-size: large;
 }
+body {
+    margin: 0;
+}
 
 .header-panel {
     background-color: #c0c0c0;
@@ -19,7 +22,6 @@ html {
 .note-in-list {
     background-color: #c0c0c0;
     margin: 10px 0;
-    /*padding: 10px;*/
 }
 .note-in-list-item {
     margin: 10px;
@@ -27,7 +29,17 @@ html {
 }
 .note-in-list-item-buttons {
     margin: 10px;
-    /*padding: 4px 10px;*/
+}
+.note-in-list-view {
+    background-color: #ffffff;
+    margin: 0 10px 10px 10px;
+    padding: 4px 10px;
+    border-style: solid;
+    border-width: 10px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-color: #c0c0c0;
 }
 
 .edit-note-form {
