@@ -18,10 +18,10 @@ namespace SharedNotes.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Body = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Body = table.Column<string>(type: "character varying(65530)", maxLength: 65530, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastEdit = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    LastEdit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

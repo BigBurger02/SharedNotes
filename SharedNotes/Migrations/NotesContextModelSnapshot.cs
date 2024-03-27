@@ -31,18 +31,19 @@ namespace SharedNotes.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(65530)
+                        .HasColumnType("character varying(65530)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastEdit")
+                    b.Property<DateTime>("LastEdit")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
 

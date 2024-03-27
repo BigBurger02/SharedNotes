@@ -1,27 +1,51 @@
-html {
-    text-decoration: none;
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
     font-size: large;
+    border-radius: 10px;
 }
 body {
-    margin: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+#root, #__next {
+    isolation: isolate;
+}
+
+
+
+
 
 .header-panel {
     background-color: #c0c0c0;
     padding: 10px;
+    border-radius: 0;
 }
 .header-panel-item {
     padding: 4px 10px;
-    text-decoration: none;
-    color: #000000;
+}
+.content {
+    padding: 10px;
 }
 
 .notes-list {
-    margin: 10px;
+    
 }
 .note-in-list {
     background-color: #c0c0c0;
-    margin: 10px 0;
+    margin: 0 0 10px 0;
 }
 .note-in-list-item {
     margin: 10px;
@@ -34,6 +58,9 @@ body {
     background-color: #ffffff;
     margin: 0 10px 10px 10px;
     padding: 4px 10px;
+    min-height: 45px;
+    border-radius: 0;
+    
     border-style: solid;
     border-width: 10px;
     border-top: none;
@@ -43,17 +70,14 @@ body {
 }
 
 .edit-note-form {
-    margin: 10px;
-    
-    
+    width: 100%;
     background-color: #c0c0c0;
+    padding: 10px;
 }
 .input-text {
     border-width: 0;
     width: 100%;
     outline: none;
-    font-size: medium;
-    margin: 10px 10px 0 10px;
     padding: 4px 10px;
 }
 
@@ -61,7 +85,6 @@ body {
     background-color: #ffffff;
     padding: 4px 10px;
     border-width: 0;
-    font-size: medium;
 }
 
 .flex-space-between {
@@ -74,6 +97,9 @@ body {
 }
 .mr-10 {
     margin-right: 10px;
+}
+.mb-10 {
+    margin-bottom: 10px;
 }
 .m-10 {
     margin: 10px;

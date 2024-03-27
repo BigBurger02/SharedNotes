@@ -12,10 +12,9 @@ public class Note
     public string Title { get; set; } = String.Empty;
     
     [StringLength(65530, ErrorMessage = "Title too long.")]
-    public string Body { get; set; } = String.Empty;
+    public string? Body { get; set; } = String.Empty;
     
-    [Required]
     public DateTime Created { get; set; }
     
-    public DateTime? LastEdit { get; set; }
+    public DateTime LastEdit { get; set; }
 }
