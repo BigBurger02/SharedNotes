@@ -9,31 +9,46 @@
 <PageTitle>Notes</PageTitle>
 
 <div class="header-panel flex-space-between">
-	<a class="header-panel-item bg-col-white mr-10">
-		New note
-	</a>
+	@* <a class="header-panel-item bg-col-white mr-10"> *@
+	@* 	New note *@
+	@* </a> *@
+	<button class="white-button" @onclick="() => EditNote(0)">New note</button>
 	<div class="header-panel-item bg-col-white width-50">
 		Search
 	</div>
 	<div class="header-panel-item ml-10">
-		Total notes: 0
+		Total notes: @Notes.Count
 	</div>
 </div>
 
-@if (editingNote != 0)
+@if (EditingNoteId != -1)
 {
-	
+	<EditForm Model="EditingNote" OnValidSubmit="SaveNote" FormName="EditNoteForm" class="edit-note-form">
+		<DataAnnotationsValidator/>
+		<ValidationSummary/>
+
+		<div>
+			<InputText @bind-Value="EditingNote.Title" class="input-text" />
+		</div>
+		<div>
+			<InputTextArea @bind-Value="EditingNote.Body"  class="input-text height-200px" />
+		</div>
+
+		<div>
+			<button class="white-button m-10" type="submit">Save</button>
+		</div>
+	</EditForm>
 }
 
-@if (editingNote == 0)
+@if (EditingNoteId == -1)
 {
-	@if (notes == null)
+	@if (Notes == null)
 	{
 		<p>
 			<em>Loading...</em>
 		</p>
 	}
-	else if (!notes.Any())
+	else if (!Notes.Any())
 	{
 		<p>
 			<em>No notes</em>
@@ -42,11 +57,11 @@
 	else
 	{
 		<div class="notes-list">
-			@foreach (var item in notes)
+			@foreach (var item in Notes)
 			{
 				<div class="note-in-list flex-space-between">
 					<div class="note-in-list-item width-50">@item.Title</div>
-					<div class="note-in-list-item">@item.Created</div>
+					<div class="note-in-list-item">@item.LastEdit</div>
 					<div class="note-in-list-item-buttons flex-space-between">
 						<button class="white-button mr-10" @onclick="() => EditNote(item.Id)">View note</button>
 						<button class="white-button" @onclick="() => EditNote(item.Id)">Edit note</button>
@@ -59,28 +74,65 @@
 
 
 @code {
-	private int editingNote = 0;
+	private int EditingNoteId = -1; // -1 - none; 0 - new note
 
-	private List<Note> notes = null;
+	private List<Note> Notes = null;
+
+	[SupplyParameterFromForm]
+	private Note? EditingNote { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		notes = await GetAllNotes();
+		Notes = await GetAllNotes();
 	}
 
 	private async Task<List<Note>> GetAllNotes()
 	{
 		using var context = await DbFactory.CreateDbContextAsync();
-		return context.Notes.ToList();
+		return context.Notes
+			.OrderByDescending(l => l.LastEdit)
+			.ToList();
 	}
 
 	private void EditNote(int id)
 	{
-		editingNote = id;
+		if (id == 0)
+		{
+			EditingNoteId = 0;
+			EditingNote = new Note()
+			{
+				Created = DateTime.UtcNow,
+			};
+
+			return;
+		}
+		
+		EditingNoteId = id;
+		EditingNote = Notes.Find(i => i.Id == id);	
 	}
-	
-	private void UpdateHeading()
+
+	private async Task SaveNote()
 	{
-		editingNote = -1;
+		using var context = await DbFactory.CreateDbContextAsync();
+		
+		if (EditingNoteId == 0)
+		{
+			EditingNote.LastEdit = DateTime.UtcNow;
+			await context.Notes.AddAsync(EditingNote);
+			await context.SaveChangesAsync();
+			
+			Notes.Add(EditingNote);
+		}
+		else
+		{
+			EditingNote.LastEdit = DateTime.UtcNow;
+
+			context.Notes.Update(EditingNote);
+			await context.SaveChangesAsync();
+		}
+		
+		EditingNoteId = -1;
+		EditingNote = null;
 	}
+
 }

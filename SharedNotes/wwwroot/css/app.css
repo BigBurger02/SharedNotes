@@ -30,6 +30,21 @@ html {
     /*padding: 4px 10px;*/
 }
 
+.edit-note-form {
+    margin: 10px;
+    
+    
+    background-color: #c0c0c0;
+}
+.input-text {
+    border-width: 0;
+    width: 100%;
+    outline: none;
+    font-size: medium;
+    margin: 10px 10px 0 10px;
+    padding: 4px 10px;
+}
+
 .white-button {
     background-color: #ffffff;
     padding: 4px 10px;
@@ -48,6 +63,9 @@ html {
 .mr-10 {
     margin-right: 10px;
 }
+.m-10 {
+    margin: 10px;
+}
 .py-4 {
     padding-top: 4px;
     padding-bottom: 4px;
@@ -62,6 +80,9 @@ html {
 }
 .width-100 {
     width: 100%;
+}
+.height-200px {
+    height: 200px;
 }
 
 .bg-col-white {
