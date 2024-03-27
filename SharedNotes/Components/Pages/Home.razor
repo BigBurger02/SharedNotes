@@ -1,17 +1,15 @@
 ﻿@page "/"
 @using Microsoft.EntityFrameworkCore
 @using SharedNotes.Data
+@using SharedNotes.Interfaces
 @using SharedNotes.Model
 @attribute [StreamRendering]
-@inject IDbContextFactory<NotesContext> DbFactory
+@inject INotesRepository Repository
 @rendermode InteractiveServer
 
 <PageTitle>Notes</PageTitle>
 
 <div class="header-panel flex-space-between">
-	@* <a class="header-panel-item bg-col-white mr-10"> *@
-	@* 	New note *@
-	@* </a> *@
 	<button class="white-button" @onclick="() => EditNote(0)">New note</button>
 	<div class="header-panel-item bg-col-white width-50">
 		Search
@@ -107,14 +105,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		Notes = await GetAllNotes();
-	}
-
-	private async Task<List<Note>> GetAllNotes()
-	{
-		using var context = await DbFactory.CreateDbContextAsync();
-		return context.Notes
-			.OrderByDescending(l => l.LastEdit)
+		Notes = Repository.GetAllNotesOrderByLastEditDesc()
 			.ToList();
 	}
 
@@ -137,22 +128,19 @@
 
 	private async Task SaveNote()
 	{
-		using var context = await DbFactory.CreateDbContextAsync();
-
 		if (EditingNoteId == 0)
 		{
 			EditingNote.LastEdit = DateTime.UtcNow;
-			await context.Notes.AddAsync(EditingNote);
-			await context.SaveChangesAsync();
+			await Repository.AddNoteAsync(EditingNote);
+			await Repository.Commit();
 
 			Notes.Add(EditingNote);
 		}
 		else
 		{
 			EditingNote.LastEdit = DateTime.UtcNow;
-
-			context.Notes.Update(EditingNote);
-			await context.SaveChangesAsync();
+			
+			await Repository.Commit();
 		}
 
 		EditingNoteId = -1;
