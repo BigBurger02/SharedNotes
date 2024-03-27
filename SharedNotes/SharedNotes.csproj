@@ -18,4 +18,16 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <None Remove="tailwind.config.js" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Content Remove="package-lock.json" />
+    </ItemGroup>
+
 </Project>

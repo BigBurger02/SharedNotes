@@ -1,0 +1,69 @@
+html {
+    text-decoration: none;
+    font-size: large;
+}
+
+.header-panel {
+    background-color: #c0c0c0;
+    padding: 10px;
+}
+.header-panel-item {
+    padding: 4px 10px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.notes-list {
+    margin: 10px;
+}
+.note-in-list {
+    background-color: #c0c0c0;
+    margin: 10px 0;
+    /*padding: 10px;*/
+}
+.note-in-list-item {
+    margin: 10px;
+    padding: 4px 10px;
+}
+.note-in-list-item-buttons {
+    margin: 10px;
+    /*padding: 4px 10px;*/
+}
+
+.white-button {
+    background-color: #ffffff;
+    padding: 4px 10px;
+    border-width: 0;
+    font-size: medium;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+.mr-10 {
+    margin-right: 10px;
+}
+.py-4 {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.px-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.width-50 {
+    width: 50%;
+}
+.width-100 {
+    width: 100%;
+}
+
+.bg-col-white {
+    background-color: #ffffff;
+}
