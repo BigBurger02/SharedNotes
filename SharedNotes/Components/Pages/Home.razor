@@ -13,7 +13,14 @@
 <div class="header-panel flex-space-between">
 	<button class="white-button mr-10" @onclick="() => EditNote(0)">New note</button>
 	<div class="header-panel-item bg-col-white width-50">
-		Search
+		<input
+			@bind-value="SearchString"
+			@bind-value:event="oninput"
+			@onkeyup="Search"
+			
+			class="input-text"
+			placeholder="Search"
+		/>
 	</div>
 	<div class="header-panel-item ml-10">
 		Total notes:
@@ -48,20 +55,29 @@
 	{
 		@if (Notes == null)
 		{
-			<p>
-				<em>Loading...</em>
-			</p>
+			<div class="short-info">Loading...</div>
 		}
 		else if (!Notes.Any())
 		{
-			<p>
-				<em>No notes</em>
-			</p>
+			<div class="short-info">No notes</div>
 		}
 		else
 		{
+			@if (SearchString == string.Empty)
+			{
+				ShowNotes = Notes;
+			}
+			else
+			{
+				ShowNotes = FoundNotes;
+				if (FoundNotes.Count == 0)
+				{
+					<div class="short-info">Nothing found(</div>
+				}
+			}
+			
 			<div class="notes-list">
-				@foreach (var item in Notes)
+				@foreach (var item in ShowNotes)
 				{
 					<div class="note-in-list">
 						<div class="flex-space-between">
@@ -101,10 +117,18 @@
 	[SupplyParameterFromForm]
 	private Note? EditingNote { get; set; }
 
+	private string NotesIndexName = "notes-index";
+	private string SearchString = String.Empty;
+	private List<Note> FoundNotes = null!;
+	
+	private List<Note> ShowNotes = null!;
+
 	protected override async Task OnInitializedAsync()
 	{
 		Notes = Repository.GetAllNotesOrderByLastEditDesc()
 			.ToList();
+
+		FoundNotes = new List<Note>();
 	}
 
 	private void EditNote(int id)
@@ -142,6 +166,8 @@
 			await Repository.Commit();
 		}
 
+		await Elasticsearch.IndexDocAsync(EditingNote, NotesIndexName);
+
 		EditingNoteId = -1;
 		EditingNote = null;
 
@@ -150,4 +176,14 @@
 			.ToList();
 	}
 
+	private async Task Search()
+	{
+		if (SearchString == String.Empty)
+		{
+			FoundNotes = new List<Note>();
+		}
+		
+		var found = await Elasticsearch.GetNotesAsync(SearchString, NotesIndexName, 0, 10);
+		FoundNotes = found.ToList();
+	}
 }
