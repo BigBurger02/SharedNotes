@@ -1,3 +1,5 @@
+using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 using SharedNotes.Components;
 using SharedNotes.Data;
 using SharedNotes.Interfaces;
@@ -7,6 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<NotesContext>();
 builder.Services.AddScoped<INotesRepository, NotesRepository>();
+
+builder.Services.AddSingleton<ElasticsearchClient>(
+    new ElasticsearchClient(
+        builder.Configuration.GetValue<string>("Elasticsearch:CloudId"), 
+        new ApiKey(builder.Configuration.GetValue<string>("Elasticsearch:ApiKey"))
+    ));
+builder.Services.AddScoped<IElasticsearchService, ElasticsearchService>();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

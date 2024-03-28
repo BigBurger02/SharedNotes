@@ -2,7 +2,10 @@
 @using SharedNotes.Interfaces
 @using SharedNotes.Model
 @attribute [StreamRendering]
+
 @inject INotesRepository Repository
+@inject IElasticsearchService Elasticsearch
+
 @rendermode InteractiveServer
 
 <PageTitle>Notes</PageTitle>
