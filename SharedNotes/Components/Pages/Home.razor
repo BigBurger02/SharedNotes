@@ -37,13 +37,13 @@
 	{
 		<EditForm Model="EditingNote" OnValidSubmit="SaveNote" FormName="EditNoteForm" class="edit-note-form">
 			<DataAnnotationsValidator/>
-			<ValidationSummary/>
+			@* <ValidationSummary class="validation-errors"/> *@
 
 			<div>
 				<InputText @bind-Value="EditingNote.Title" class="input-text mb-10" placeholder="Title"/>
 			</div>
-			<div>
-				<InputTextArea @bind-Value="EditingNote.Body" class="input-text height-200px" placeholder=""/>
+			<div class="height-20em mb-10">
+				<InputTextArea @bind-Value="EditingNote.Body" class="input-text height-20em" placeholder=""/>
 			</div>
 
 			<div class="flex">
@@ -52,7 +52,10 @@
 				</div>
 				<div>
 					<button class="white-button" @onclick="await => CancelNote()">Cancel</button>
-					</div>
+				</div>
+				<div>
+					<ValidationSummary class="validation-errors"/>
+				</div>
 			</div>
 		</EditForm>
 	}

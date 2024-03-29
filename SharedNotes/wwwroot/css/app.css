@@ -99,6 +99,13 @@ p, h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
 }
 
+.validation-errors {
+    list-style-type: none;
+    margin-bottom: 0;
+    padding: 4px 10px;
+    color: red;
+}
+
 .flex {
     display: flex;
 }
@@ -134,8 +141,8 @@ p, h1, h2, h3, h4, h5, h6 {
 .width-100 {
     width: 100%;
 }
-.height-200px {
-    height: 200px;
+.height-20em {
+    height: 20em;
 }
 
 .bg-col-white {
