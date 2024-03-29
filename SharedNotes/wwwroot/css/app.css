@@ -3,8 +3,6 @@
 }
 * {
     margin: 0;
-    font-size: large;
-    border-radius: 10px;
 }
 body {
     line-height: 1.5;
@@ -28,13 +26,27 @@ p, h1, h2, h3, h4, h5, h6 {
 
 
 
+:root {
+    --white: #ffffff;
+    --gray: #c0c0c0;
+}
+* {
+    margin: 0;
+    border-radius: 10px;
+    font-family: Garamond, sans-serif;
+}
+
+
+
+
+
 .short-info {
     text-align: center;
     font-size: x-large;
 }
 
 .header-panel {
-    background-color: #c0c0c0;
+    background-color: var(--gray);
     padding: 10px;
     border-radius: 0;
 }
@@ -46,7 +58,7 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .note-in-list {
-    background-color: #c0c0c0;
+    background-color: var(--gray);
     margin: 0 0 10px 0;
     padding: 10px;
 }
@@ -57,7 +69,7 @@ p, h1, h2, h3, h4, h5, h6 {
     
 }
 .note-in-list-view {
-    background-color: #ffffff;
+    background-color: var(--white);
     margin: 10px 0 0 0;
     padding: 4px 10px;
     min-height: 35px;
@@ -65,7 +77,7 @@ p, h1, h2, h3, h4, h5, h6 {
 
 .edit-note-form {
     width: 100%;
-    background-color: #c0c0c0;
+    background-color: var(--gray);
     padding: 10px;
 }
 .input-text {
@@ -81,11 +93,15 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .white-button {
-    background-color: #ffffff;
+    background-color: var(--white);
     padding: 4px 10px;
     border-width: 0;
+    cursor: pointer;
 }
 
+.flex {
+    display: flex;
+}
 .flex-space-between {
     display: flex;
     justify-content: space-between;
@@ -123,5 +139,5 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-col-white {
-    background-color: #ffffff;
+    background-color: var(--white);
 }

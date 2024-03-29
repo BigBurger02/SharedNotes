@@ -41,4 +41,13 @@ public class NotesRepository : INotesRepository
         await _context.Notes
             .AddAsync(note);
     }
+
+    public void ReloadNote(Note note)
+    {
+        _context.Notes.Entry(note).Reload();
+    }
+    public async Task ReloadNoteAsync(Note note)
+    {
+        await _context.Notes.Entry(note).ReloadAsync();
+    }
 }

@@ -11,4 +11,7 @@ public interface INotesRepository
     
     void AddNote(Note note);
     Task AddNoteAsync(Note note);
+
+    void ReloadNote(Note note);
+    Task ReloadNoteAsync(Note note);
 }
