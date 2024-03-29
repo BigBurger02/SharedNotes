@@ -84,7 +84,11 @@
 			else
 			{
 				ShowNotes = FoundNotes;
-				if (FoundNotes.Count == 0)
+				if (Searching)
+				{
+					<div class="short-info">Searching...</div>	
+				}
+				else if (FoundNotes.Count == 0)
 				{
 					<div class="short-info">Nothing found(</div>
 				}
@@ -136,6 +140,7 @@
 	private string NotesIndexName = "notes-index";
 	private string SearchString = String.Empty;
 	private List<Note> FoundNotes = null!;
+	private bool Searching = false;
 	
 	private List<Note> ShowNotes = null!;
 
@@ -201,12 +206,15 @@
 
 	private async Task Search()
 	{
-		if (SearchString == String.Empty)
+		if (string.IsNullOrWhiteSpace(SearchString))
 		{
 			FoundNotes = new List<Note>();
+			return;
 		}
-		
-		var found = await Elasticsearch.GetNotesAsync(SearchString, NotesIndexName, 0, 10);
+
+		Searching = true;
+		var found = await Elasticsearch.GetNotesAsync(SearchString, NotesIndexName, 0, 100);
 		FoundNotes = found.ToList();
+		Searching = false;
 	}
 }

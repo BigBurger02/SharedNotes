@@ -2,7 +2,6 @@ using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.IndexManagement;
 using SharedNotes.Interfaces;
 using SharedNotes.Model;
-using ExistsResponse = Elastic.Clients.Elasticsearch.ExistsResponse;
 
 namespace SharedNotes.Services;
 
@@ -66,37 +65,27 @@ public class ElasticsearchService : IElasticsearchService
     
     public async Task<IEnumerable<Note>> GetNotesAsync(string searchString, string indexName, int from, int size)
     {
-        var foundNotes = new List<Note>();
-        
         var response = await _client.SearchAsync<Note>(s => s
+            
             .Index(indexName)
             .From(from)
             .Size(size)
             .Query(q => q
-                .Term(t => t.Title, searchString)
+                .Bool(b => b
+                    .Should(
+                        bs => bs.Term(p => p.Body, searchString),
+                        bs => bs.Term(p => p.Title, searchString)
+                    )
+                )
             )
         );
 
         if (response.IsValidResponse)
         {
-            foundNotes.AddRange(response.Documents.AsEnumerable());
-        }
-        
-        response = await _client.SearchAsync<Note>(s => s
-            .Index(indexName)
-            .From(from)
-            .Size(size)
-            .Query(q => q
-                .Term(t => t.Body, searchString)
-            )
-        );
-
-        if (response.IsValidResponse)
-        {
-            foundNotes.AddRange(response.Documents.AsEnumerable());
+            return response.Documents;
         }
 
-        return foundNotes;
+        return null!;
     }
     
     public async Task<List<T>?> GetAll<T>(string indexName) where T : class
