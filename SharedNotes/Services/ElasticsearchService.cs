@@ -64,7 +64,7 @@ public class ElasticsearchService : IElasticsearchService
         return await _client.IndexManyAsync(docs, indexName);
     }
     
-    public async Task<IEnumerable<Note>> GetNotesAsync(string searchString, string indexName, int from = 0, int size = 0)
+    public async Task<IEnumerable<Note>> GetNotesAsync(string searchString, string indexName, int from, int size)
     {
         var foundNotes = new List<Note>();
         

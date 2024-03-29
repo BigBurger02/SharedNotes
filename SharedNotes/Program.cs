@@ -36,7 +36,8 @@ if (app.Environment.IsDevelopment())
         try
         {
             var context = services.GetRequiredService<NotesContext>();
-            DbInitializer.Initialize(context);
+            var elasticsearch = services.GetRequiredService<IElasticsearchService>();
+            DbInitializer.Initialize(context, elasticsearch);
         }
         catch (Exception ex)
         {
