@@ -12,16 +12,22 @@
 <PageTitle>Notes</PageTitle>
 
 <div class="header-panel flex-space-between">
-	<button class="white-button mr-10" @onclick="() => EditNote(0)">New note</button>
+	@if (EditingNoteId == -1)
+	{
+		<button class="white-button mr-10" @onclick="() => EditNote(0)">New note</button>
+	}
+	else
+	{
+		<button class="white-button mr-10 cursor-not-allowed" @onclick="() => EditNote(0)" disabled="disabled">New note</button>
+	}
 	<div class="width-50">
 		<input
 			@bind-value="SearchString"
 			@bind-value:event="oninput"
 			@onkeyup="Search"
-			
+
 			class="header-panel-item input-search"
-			placeholder="Search"
-		/>
+			placeholder="Search"/>
 	</div>
 	<div class="header-panel-item ml-10">
 		Total notes:
@@ -37,7 +43,6 @@
 	{
 		<EditForm Model="EditingNote" OnValidSubmit="SaveNote" FormName="EditNoteForm" class="edit-note-form">
 			<DataAnnotationsValidator/>
-			@* <ValidationSummary class="validation-errors"/> *@
 
 			<div>
 				<InputText @bind-Value="EditingNote.Title" class="input-text mb-10" placeholder="Title"/>
