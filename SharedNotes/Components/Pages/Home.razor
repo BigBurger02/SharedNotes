@@ -12,13 +12,13 @@
 
 <div class="header-panel flex-space-between">
 	<button class="white-button mr-10" @onclick="() => EditNote(0)">New note</button>
-	<div class="header-panel-item bg-col-white width-50">
+	<div class="width-50">
 		<input
 			@bind-value="SearchString"
 			@bind-value:event="oninput"
 			@onkeyup="Search"
 			
-			class="input-text"
+			class="header-panel-item input-search"
 			placeholder="Search"
 		/>
 	</div>
@@ -76,7 +76,7 @@
 				}
 			}
 			
-			<div class="notes-list">
+			<div>
 				@foreach (var item in ShowNotes)
 				{
 					<div class="note-in-list">
@@ -98,7 +98,9 @@
 						@if (ViewNote == item.Id)
 						{
 							<div class="note-in-list-view">
-								@item.Body
+								<p>
+									@item.Body
+								</p>
 							</div>
 						}
 					</div>
@@ -155,7 +157,7 @@
 		{
 			EditingNote.LastEdit = DateTime.UtcNow;
 			await Repository.AddNoteAsync(EditingNote);
-			await Repository.Commit();
+			await Repository.CommitAsync();
 
 			Notes.Add(EditingNote);
 		}
@@ -163,7 +165,7 @@
 		{
 			EditingNote.LastEdit = DateTime.UtcNow;
 
-			await Repository.Commit();
+			await Repository.CommitAsync();
 		}
 
 		await Elasticsearch.IndexDocAsync(EditingNote, NotesIndexName);

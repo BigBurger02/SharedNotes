@@ -45,33 +45,22 @@ p, h1, h2, h3, h4, h5, h6 {
     padding: 10px;
 }
 
-.notes-list {
-    
-}
 .note-in-list {
     background-color: #c0c0c0;
     margin: 0 0 10px 0;
+    padding: 10px;
 }
 .note-in-list-item {
-    margin: 10px;
     padding: 4px 10px;
 }
 .note-in-list-item-buttons {
-    margin: 10px;
+    
 }
 .note-in-list-view {
     background-color: #ffffff;
-    margin: 0 10px 10px 10px;
+    margin: 10px 0 0 0;
     padding: 4px 10px;
-    min-height: 45px;
-    border-radius: 0;
-    
-    border-style: solid;
-    border-width: 10px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom-color: #c0c0c0;
+    min-height: 35px;
 }
 
 .edit-note-form {
@@ -84,6 +73,11 @@ p, h1, h2, h3, h4, h5, h6 {
     width: 100%;
     outline: none;
     padding: 4px 10px;
+}
+.input-search {
+    border-width: 0;
+    width: 100%;
+    outline: none;
 }
 
 .white-button {
