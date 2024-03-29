@@ -1,3 +1,4 @@
+using System.Collections;
 using Microsoft.EntityFrameworkCore;
 using SharedNotes.Data;
 using SharedNotes.Interfaces;
@@ -7,24 +8,34 @@ namespace SharedNotes.Services;
 
 public class NotesRepository : INotesRepository
 {
-    private NotesContext _context;
+    private readonly NotesContext _context;
 
     public NotesRepository(NotesContext context)
     {
         _context = context;
     }
-
-    public async Task<int> Commit()
+    
+    public int Commit()
+    {
+        return _context.SaveChanges();
+    }
+    public async Task<int> CommitAsync()
     {
         return await _context.SaveChangesAsync();
     }
 
-    public IQueryable<Note> GetAllNotesOrderByLastEditDesc()
+    public IEnumerable<Note> GetAllNotesOrderByLastEditDesc()
     {
         return _context.Notes
-            .OrderByDescending(l => l.LastEdit);
+            .OrderByDescending(l => l.LastEdit)
+            .AsEnumerable();
     }
 
+    public void AddNote(Note note)
+    {
+        _context.Notes
+            .Add(note);
+    }
     public async Task AddNoteAsync(Note note)
     {
         await _context.Notes

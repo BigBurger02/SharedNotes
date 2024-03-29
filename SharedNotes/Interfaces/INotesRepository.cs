@@ -4,8 +4,11 @@ namespace SharedNotes.Interfaces;
 
 public interface INotesRepository
 {
-    Task<int> Commit();
+    int Commit();
+    Task<int> CommitAsync();
     
-    IQueryable<Note> GetAllNotesOrderByLastEditDesc();
+    IEnumerable<Note> GetAllNotesOrderByLastEditDesc();
+    
+    void AddNote(Note note);
     Task AddNoteAsync(Note note);
 }
