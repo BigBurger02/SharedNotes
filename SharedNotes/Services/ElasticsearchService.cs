@@ -73,8 +73,8 @@ public class ElasticsearchService : IElasticsearchService
             .Query(q => q
                 .Bool(b => b
                     .Should(
-                        bs => bs.Term(p => p.Body, searchString),
-                        bs => bs.Term(p => p.Title, searchString)
+                        bs => bs.Term(p => p.Body, searchString.ToLower()),
+                        bs => bs.Term(p => p.Title, searchString.ToLower())
                     )
                 )
             )
