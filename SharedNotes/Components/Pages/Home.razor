@@ -12,15 +12,13 @@
 
 <PageTitle>Notes</PageTitle>
 
-<div class="header-panel flex-space-between">
-	@if (NoteBeingEdited == null)
-	{
-		<button class="white-button mr-10" @onclick="() => EditNote(0)">New note</button>
-	}
-	else
-	{
-		<button class="white-button mr-10 cursor-not-allowed" @onclick="() => EditNote(0)" disabled="disabled">New note</button>
-	}
+<div class="header-panel flex">
+	<div class="width-25 flex justify--content-left">
+		@if (NoteBeingEdited == null)
+		{
+			<button class="white-button" @onclick="() => EditNote(0)">New note</button>
+		}
+	</div>
 	<div class="width-50">
 		<input
 			@bind-value="SearchString"
@@ -30,7 +28,7 @@
 			class="header-panel-item input-search"
 			placeholder="Search"/>
 	</div>
-	<div class="header-panel-item ml-10">
+	<div class="header-panel-item width-25 flex justify--content-right">
 		Total notes:
 		@if (Notes != null)
 		{
@@ -38,6 +36,8 @@
 		}
 	</div>
 </div>
+
+
 
 <div class="content">
 	@if (NoteBeingEdited == null)
